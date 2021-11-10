@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Math.abs
 
 class GridItemDecorator(
     val offsetTop: Int,
@@ -31,19 +32,26 @@ class GridItemDecorator(
 
         val realSize = width - (offsetLeft + offsetRight)
 
-        val realColumnSize = realSize / col
-        val columnSize = width / col
+        val foo=realSize/2/2
 
-        val deltaSize = realColumnSize - columnSize
 
         item?.let {
-            if (it.left) {
-                outRect.left = offsetLeft
-                outRect.right = -offsetLeft
-            } else {
-//                outRect.left = offsetLeft
-//                outRect.right = -offsetLeft
+            // One item on the row
+            if(it.left && it.right){
+                outRect.left=offsetLeft
+                outRect.right=offsetRight
             }
+            if(it.left && !it.right){
+                outRect.left=offsetLeft
+                outRect.right=-abs(offsetLeft-offsetRight)/item.spanSize
+            }else {
+                if (it.right && !it.left) {
+                    outRect.left = abs(offsetLeft - offsetRight) / item.spanSize
+                    outRect.right = offsetRight
+                }
+            }
+
+
         }
 
 

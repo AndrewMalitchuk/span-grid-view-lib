@@ -54,15 +54,15 @@ class MainActivity : AppCompatActivity() {
     fun genDummyData3(): ArrayList<ListItem> {
         gridColumn = 4
         return ArrayList<ListItem>().apply {
-            add(ListItem("0", 4))
-            add(ListItem("1", 2))
-            add(ListItem("2", 2))
-            add(ListItem("3", 1))
+            add(ListItem("|", 4))
 
-            add(ListItem("4", 2))
-            add(ListItem("5", 2))
+            add(ListItem("|", 2))
+            add(ListItem("|", 2))
 
-            add(ListItem("6", 4))
+            add(ListItem("|", 1))
+            add(ListItem("|", 1))
+            add(ListItem("|", 1))
+            add(ListItem("|", 1))
 
             add(ListItem("7", 1))
             add(ListItem("8", 3))
@@ -157,14 +157,14 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun foo(list: List<UIModel>, column: Int) {
 
-        var result = ArrayList<Pair<Int, UIModel>>()
+        val result = ArrayList<Pair<Int, UIModel>>()
 
         var j = 0
         var i = 0
         var spanSizeSum = 0
         var previousSum = 0
         while (i < list.size) {
-            var currentItem = list[i]
+            val currentItem = list[i]
             var pair = Pair(j, currentItem)
 
             if ((column - spanSizeSum) >= 0) {
@@ -194,8 +194,8 @@ class MainActivity : AppCompatActivity() {
             i++
         }
 
-        var grouped = result.groupBy { it.first }
-        grouped.forEach { i, list ->
+        val grouped = result.groupBy { it.first }
+        grouped.forEach { (_, list) ->
             if (list.size == 1) {
                 list[0].second.apply {
                     left = true
@@ -228,7 +228,7 @@ class MainActivity : AppCompatActivity() {
         grouped[grouped.keys.last()]?.forEach {
             it.second.bottom = true
         }
-        grouped.forEach { i, list ->
+        grouped.forEach { (_, list) ->
 
             list.forEach {
                 it.second.vertical = true
@@ -239,4 +239,94 @@ class MainActivity : AppCompatActivity() {
 
         result
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun bar(list: List<UIModel>, column: Int) {
+
+
+        // Num, Model, Weight
+        val result = ArrayList<Pair<Int, UIModel>>()
+        val resultFoo = ArrayList<Triple<Int, UIModel, Int>>()
+
+        var j = 0
+        var i = 0
+        var spanSizeSum = 0
+        var previousSum = 0
+        while (i < list.size) {
+            val currentItem = list[i]
+            var pair = Pair(j, currentItem)
+
+            if ((column - spanSizeSum) >= 0) {
+
+                if ((previousSum + currentItem.spanSize) > column) {
+                    j++
+                    pair = Pair(j, currentItem)
+                    spanSizeSum = 0
+                } else {
+                    if ((spanSizeSum + currentItem.spanSize) > column) {
+                        j++
+                        pair = Pair(j, currentItem)
+                        spanSizeSum = 0
+
+                    }
+
+                }
+
+                result.add(pair)
+                spanSizeSum += currentItem.spanSize
+                previousSum = currentItem.spanSize
+            }
+            if (spanSizeSum == column) {
+                spanSizeSum = 0
+                j++
+            }
+            i++
+        }
+
+        val grouped = result.groupBy { it.first }
+        grouped.forEach { (_, list) ->
+            if (list.size == 1) {
+                list[0].second.apply {
+                    left = true
+                    right = true
+                }
+            } else {
+                list.first().second.left = true
+                list.last().second.right = true
+
+                list.forEach {
+                    with(it.second) {
+                        if (!right) {
+                            horizontal = true
+                        }
+                        if (!left) {
+                            horizontal = true
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        // Top
+        grouped[0]?.forEach {
+            it.second.top = true
+        }
+        // Botom
+        grouped[grouped.keys.last()]?.forEach {
+            it.second.bottom = true
+        }
+        grouped.forEach { (_, list) ->
+
+            list.forEach {
+                it.second.vertical = true
+            }
+
+        }
+
+
+        result
+    }
+
 }
