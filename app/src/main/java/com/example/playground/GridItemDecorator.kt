@@ -32,22 +32,33 @@ class GridItemDecorator(
 
         val realSize = width - (offsetLeft + offsetRight)
 
-        val foo=realSize/2/2
+        val foo = realSize / 2 / 2
 
 
         item?.let {
             // One item on the row
-            if(it.left && it.right){
-                outRect.left=offsetLeft
-                outRect.right=offsetRight
+            if (it.left && it.right) {
+                outRect.left = offsetLeft
+                outRect.right = offsetRight
             }
-            if(it.left && !it.right){
-                outRect.left=offsetLeft
-                outRect.right=-abs(offsetLeft-offsetRight)/item.spanSize
-            }else {
+            if (it.left && !it.right) {
+                outRect.left = offsetLeft
+                outRect.right = -abs(offsetLeft - offsetRight) / (col/item.spanSize)
+//                outRect.left = offsetLeft
+//                outRect.right = -abs(offsetLeft - offsetRight) / (col / item.spanSize)
+            } else {
                 if (it.right && !it.left) {
-                    outRect.left = abs(offsetLeft - offsetRight) / item.spanSize
+                    outRect.left = abs(offsetLeft - offsetRight) / (col / item.spanSize)
                     outRect.right = offsetRight
+//                    outRect.left = abs(offsetLeft - offsetRight) / (col / item.spanSize)
+//                    outRect.right = offsetRight
+                } else {
+                    if (it.horizontal) {
+                        it.text
+                        outRect.left = 30
+                        outRect.right = 0
+//                        outRect.right = 30
+                    }
                 }
             }
 

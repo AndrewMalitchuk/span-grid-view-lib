@@ -54,15 +54,15 @@ class MainActivity : AppCompatActivity() {
     fun genDummyData3(): ArrayList<ListItem> {
         gridColumn = 4
         return ArrayList<ListItem>().apply {
-            add(ListItem("|", 4))
+            add(ListItem("0", 4))
 
-            add(ListItem("|", 2))
-            add(ListItem("|", 2))
+            add(ListItem("1", 2))
+            add(ListItem("2", 2))
 
-            add(ListItem("|", 1))
-            add(ListItem("|", 1))
-            add(ListItem("|", 1))
-            add(ListItem("|", 1))
+            add(ListItem("3", 1))
+            add(ListItem("4", 1))
+            add(ListItem("5", 1))
+            add(ListItem("6", 1))
 
             add(ListItem("7", 1))
             add(ListItem("8", 3))
@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-//        val result = genDummyData1()
+        val result = genDummyData1()
 //        val result = genDummyData2()
-        val result = genDummyData3()
+//        val result = genDummyData3()
         foo(result, gridColumn)
         with(binding) {
             val recyclerViewAdapter =
