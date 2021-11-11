@@ -1,7 +1,7 @@
 package com.example.playground
 
+import android.content.res.Resources
 import android.graphics.Rect
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +15,9 @@ class GridItemDecorator(
     val spacingHorizontal: Int,
     val spacingVertical: Int
 ) : RecyclerView.ItemDecoration() {
+
+    var i = 0
+    var sum = 0
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -32,35 +35,84 @@ class GridItemDecorator(
 
         val realSize = width - (offsetLeft + offsetRight)
 
-        val foo = realSize / 2 / 2
+        val oneSpanSize = width / col
+        val realOneSpanSize = realSize / 2 / 2
+
+        val oneColumnSize = oneSpanSize
+        val realOneColumnSize = realOneSpanSize
+
+        val delta = abs(oneColumnSize - realOneColumnSize)
 
 
         item?.let {
-            // One item on the row
-            if (it.left && it.right) {
-                outRect.left = offsetLeft
-                outRect.right = offsetRight
-            }
-            if (it.left && !it.right) {
-                outRect.left = offsetLeft
-                outRect.right = -abs(offsetLeft - offsetRight) / (col/item.spanSize)
-//                outRect.left = offsetLeft
-//                outRect.right = -abs(offsetLeft - offsetRight) / (col / item.spanSize)
-            } else {
-                if (it.right && !it.left) {
-                    outRect.left = abs(offsetLeft - offsetRight) / (col / item.spanSize)
-                    outRect.right = offsetRight
-//                    outRect.left = abs(offsetLeft - offsetRight) / (col / item.spanSize)
-//                    outRect.right = offsetRight
+
+            // 1-2 == 45 dp == 120 px
+            // 3-4 == 22 dp == 60 px
+
+
+            val foo = col - (col - 2)
+
+//            // фрактальное единство
+//            outRect.apply {
+//                left = delta * item.spanSize
+//                right = (delta * item.spanSize * 2)
+//            }
+
+
+            // масштаб
+            outRect.apply {
+//                left=delta*item.spanSize
+                if (it.text == "4") {
+                    left = -(offsetLeft + offsetRight) / 2
+                    right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight) / 2
                 } else {
-                    if (it.horizontal) {
-                        it.text
-                        outRect.left = 30
-                        outRect.right = 0
-//                        outRect.right = 30
+                    if (it.text == "5") {
+                        left = -(offsetLeft + offsetRight)
+                        right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight)
+                    } else {
+//                        if (it.text=="6"){
+//                            left = -(offsetLeft + offsetRight)
+//                            right = (delta * item.spanSize * 2)
+//
+//                        }else {
+                            right = delta * item.spanSize * 2
+//                        }
                     }
                 }
+
+
             }
+
+
+//            // One item on the row
+//            if (it.left && it.right) {
+//                outRect.left = offsetLeft
+//                outRect.right = offsetRight
+//            }
+//            if (it.left && !it.right) {
+//
+////                outRect.left = offsetLeft
+////                outRect.right = (-abs(offsetLeft - offsetRight) )
+//
+////                outRect.left = offsetLeft
+////                outRect.right = -abs(offsetLeft - offsetRight) / (col / item.spanSize)
+//            } else {
+//                if (it.right && !it.left) {
+////                    outRect.left = abs(offsetLeft - offsetRight)
+////                    outRect.right = offsetRight
+//
+//
+////                    outRect.left = abs(offsetLeft - offsetRight) / (col / item.spanSize)
+////                    outRect.right = offsetRight
+//                } else {
+////                    if (it.horizontal) {
+////                        it.text
+////                        outRect.left = 30
+////                        outRect.right = 0
+//////                        outRect.right = 30
+////                    }
+//                }
+//            }
 
 
         }
@@ -100,4 +152,9 @@ class GridItemDecorator(
 //            }
 //        }
     }
+
+    val Int.dp: Int
+        get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+    val Int.px: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 }

@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        val result = genDummyData1()
+//        val result = genDummyData1()
 //        val result = genDummyData2()
-//        val result = genDummyData3()
+        val result = genDummyData3()
         foo(result, gridColumn)
         with(binding) {
             val recyclerViewAdapter =
@@ -235,6 +235,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        grouped
 
 
         result
