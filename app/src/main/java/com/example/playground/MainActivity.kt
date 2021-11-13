@@ -1,10 +1,8 @@
 package com.example.playground
 
-import android.icu.text.LocaleDisplayNames
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playground.databinding.ActivityMainBinding
@@ -15,46 +13,9 @@ class MainActivity : AppCompatActivity() {
 
     var gridColumn = 0
 
-    // col 3; row 6
-    fun genDummyData1(): ArrayList<ListItem> {
-        gridColumn = 3
-        return ArrayList<ListItem>().apply {
-            add(ListItem("0", 1))
-            add(ListItem("1", 1))
-            add(ListItem("2", 1))
-            add(ListItem("3", 2))
-            add(ListItem("4", 1))
-            add(ListItem("5", 1))
-            add(ListItem("6", 3))
-            add(ListItem("7", 1))
-            add(ListItem("8", 1))
-            add(ListItem("9", 2))
-            add(ListItem("10", 3))
-        }
-    }
-
-    // col 2; row 6
-    fun genDummyData2(): ArrayList<ListItem> {
-        gridColumn = 2
-        return ArrayList<ListItem>().apply {
-            add(ListItem("0", 1))
-            add(ListItem("1", 1))
-            add(ListItem("2", 2))
-            add(ListItem("3", 2))
-            add(ListItem("4", 1))
-            add(ListItem("5", 2))
-            add(ListItem("6", 1))
-            add(ListItem("7", 2))
-            add(ListItem("8", 1))
-            add(ListItem("9", 1))
-        }
-    }
-
-    // col 4; row 6
-    fun genDummyData3(): ArrayList<ListItem> {
+    fun genDummyData(): ArrayList<ListItem> {
         gridColumn = 4
         return ArrayList<ListItem>().apply {
-
 
             add(ListItem("20", 1))
             add(ListItem("21", 1))
@@ -131,9 +92,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-//        val result = genDummyData1()
-//        val result = genDummyData2()
-        val result = genDummyData3()
+        val result = genDummyData()
         foo(result, gridColumn)
         with(binding) {
             val recyclerViewAdapter =
@@ -155,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                         offsetRight = 20,
                         offsetBottom = 250,
                         offsetLeft = 100,
-                        spacingHorizontal = 0,
+                        spacingHorizontal = 20,
                         spacingVertical = 10
                     )
                 )

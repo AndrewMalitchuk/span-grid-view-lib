@@ -88,22 +88,55 @@ class GridItemDecorator(
                 //endregion
 
                 //region сдвиг + сдвиг с сумматором + v2
+//                var movement = (delta) * it.order
+//                if (!it.right || (it.spanSize == col) || (it.order == 0)) {
+//                    Log.i(
+//                        "foo",
+//                        "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
+//                    )
+//                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+//                    right = delta * item.spanSize + movement
+//                } else {
+//                    if ((it.right && it.locked) && (it.spanSize<col/2)) {
+//
+//
+//                        movement =delta*(it.prevSum-(col-it.prevSum))
+//
+//                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+//                        right = delta * item.spanSize + movement
+//
+//                    } else {
+//
+//                        Log.i(
+//                            "bar",
+//                            "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
+//                        )
+//                        // 1 dp == 2 px
+//                        right =
+//                            (delta * item.spanSize) - (delta * item.spanSize) + (offsetLeft + offsetRight)
+//                        left = delta * item.spanSize - (offsetLeft + offsetRight)
+//                    }
+//                }
+                //endregion
+
+                //region сдвиг відно правго краю
                 var movement = (delta) * it.order
                 if (!it.right || (it.spanSize == col) || (it.order == 0)) {
                     Log.i(
                         "foo",
                         "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
                     )
-                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement
-                    right = delta * item.spanSize + movement
+                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement + offsetLeft+spacingHorizontal
+                    right = delta * item.spanSize + movement - offsetLeft-spacingHorizontal
                 } else {
-                    if ((it.right && it.locked) && (it.spanSize<col/2)) {
+                    if ((it.right && it.locked) && (it.spanSize < col / 2)) {
 
 
-                        movement =delta*(it.prevSum-(col-it.prevSum))
+                        movement = delta * (it.prevSum - (col - it.prevSum))
 
-                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
-                        right = delta * item.spanSize + movement
+                        left =
+                            (delta * item.spanSize) - (delta * item.spanSize) - movement + offsetLeft
+                        right = delta * item.spanSize + movement - offsetLeft
 
                     } else {
 
@@ -113,50 +146,20 @@ class GridItemDecorator(
                         )
                         // 1 dp == 2 px
                         right =
-                            (delta * item.spanSize) - (delta * item.spanSize) + (offsetLeft + offsetRight)
-                        left = delta * item.spanSize - (offsetLeft + offsetRight)
+                            (delta * item.spanSize) - (delta * item.spanSize) + offsetRight
+                        left = delta * item.spanSize - offsetRight
                     }
                 }
                 //endregion
 
-//                //region сдвиг + сдвиг с сумматором + поправка
-//                var movement = (delta * item.spanSize)*it.order
-//
-//                val foo=item.spanSize*it.order
-//                Log.i("bar","${item.text} | o = ${it.order}; f = ${foo}; m: ${movement.dp}")
-//
-//                Log.i("foo", "${item.text} ${(delta * item.spanSize).dp} | ${movement.dp}")
-//
-//                if (movement == 0) {
-//                    left = (delta * item.spanSize) - (delta * item.spanSize)
-//                    right = delta * item.spanSize
-//                } else {
-//
-//
-//                    if(it.spanSize>1){
-//                        var rest=col-it.spanSize
-//                        var restSum=rest*delta
-//                        if(movement>restSum){
-//                            movement=restSum
-//                        }
-//                        // поправка к ордеру
-////                        var rest=col-it.spanSize
-////                        var restSum=rest*delta
-////                        if(movement>restSum){
-////                            movement=restSum
-////                        }
-//                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
-//                        right = delta * item.spanSize + movement
-//                    }else {
-//                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
-//                        right = delta * item.spanSize + movement
-//                    }
-//
-//
-//                    //
-//                    //
-//                }
-//                //endregion
+                //region
+                if (it.top) {
+                    outRect.top = offsetTop
+                }
+                if (it.bottom) {
+                    outRect.bottom = offsetBottom
+                }
+                //endregion
 
 
             }
