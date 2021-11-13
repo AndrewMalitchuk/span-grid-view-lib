@@ -2,6 +2,7 @@ package com.example.playground
 
 import android.content.res.Resources
 import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +16,6 @@ class GridItemDecorator(
     val spacingHorizontal: Int,
     val spacingVertical: Int
 ) : RecyclerView.ItemDecoration() {
-
-    var i = 0
-    var sum = 0
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -41,6 +39,7 @@ class GridItemDecorator(
         val oneColumnSize = oneSpanSize
         val realOneColumnSize = realOneSpanSize
 
+        // movement for 1 column
         val delta = abs(oneColumnSize - realOneColumnSize)
 
 
@@ -59,29 +58,133 @@ class GridItemDecorator(
 //            }
 
 
-            // масштаб
-            outRect.apply {
+            // масштаб рабочий
+//            outRect.apply {
 //                left=delta*item.spanSize
-                if (it.text == "4") {
-                    left = -(offsetLeft + offsetRight) / 2
-                    right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight) / 2
-                } else {
-                    if (it.text == "5") {
-                        left = -(offsetLeft + offsetRight)
-                        right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight)
-                    } else {
-//                        if (it.text=="6"){
-//                            left = -(offsetLeft + offsetRight)
-//                            right = (delta * item.spanSize * 2)
+//                right=delta*item.spanSize
+//            }
+
+            // screen width 411
+            // 4 span width 365
+
+
+            outRect.apply {
+                //region масштаб
+//                left = delta * item.spanSize
+//                right = delta * item.spanSize
+                //endregion
+
+                //region сдвиг
+//                left = (delta * item.spanSize) - (delta * item.spanSize)
+//                right = delta * item.spanSize
+                //endregion
+
+                //region сдвиг + сдвиг с сумматором
+//                val movement = (delta * item.spanSize) * it.order
 //
-//                        }else {
-                            right = delta * item.spanSize * 2
-//                        }
+//                Log.i("foo", "${item.text} ${(delta * item.spanSize).dp} | ${movement.dp}")
+//                left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+//                right = delta * item.spanSize + movement
+                //endregion
+
+                //region сдвиг + сдвиг с сумматором + v2
+                var movement = (delta) * it.order
+                if (!it.right || (it.spanSize == col) || (it.order == 0)) {
+                    Log.i(
+                        "foo",
+                        "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
+                    )
+                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+                    right = delta * item.spanSize + movement
+                } else {
+                    if ((it.right && it.locked) && (it.spanSize<col/2)) {
+
+
+                        movement =delta*(it.prevSum-(col-it.prevSum))
+
+                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+                        right = delta * item.spanSize + movement
+
+                    } else {
+
+                        Log.i(
+                            "bar",
+                            "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
+                        )
+                        // 1 dp == 2 px
+                        right =
+                            (delta * item.spanSize) - (delta * item.spanSize) + (offsetLeft + offsetRight)
+                        left = delta * item.spanSize - (offsetLeft + offsetRight)
                     }
                 }
+                //endregion
+
+//                //region сдвиг + сдвиг с сумматором + поправка
+//                var movement = (delta * item.spanSize)*it.order
+//
+//                val foo=item.spanSize*it.order
+//                Log.i("bar","${item.text} | o = ${it.order}; f = ${foo}; m: ${movement.dp}")
+//
+//                Log.i("foo", "${item.text} ${(delta * item.spanSize).dp} | ${movement.dp}")
+//
+//                if (movement == 0) {
+//                    left = (delta * item.spanSize) - (delta * item.spanSize)
+//                    right = delta * item.spanSize
+//                } else {
+//
+//
+//                    if(it.spanSize>1){
+//                        var rest=col-it.spanSize
+//                        var restSum=rest*delta
+//                        if(movement>restSum){
+//                            movement=restSum
+//                        }
+//                        // поправка к ордеру
+////                        var rest=col-it.spanSize
+////                        var restSum=rest*delta
+////                        if(movement>restSum){
+////                            movement=restSum
+////                        }
+//                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+//                        right = delta * item.spanSize + movement
+//                    }else {
+//                        left = (delta * item.spanSize) - (delta * item.spanSize) - movement
+//                        right = delta * item.spanSize + movement
+//                    }
+//
+//
+//                    //
+//                    //
+//                }
+//                //endregion
 
 
             }
+
+
+//            // масштаб
+//            outRect.apply {
+////                left=delta*item.spanSize
+//                if (it.text == "4") {
+//                    left = -(offsetLeft + offsetRight) / 2
+//                    right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight) / 2
+//                } else {
+//                    if (it.text == "5") {
+//                        left = -(offsetLeft + offsetRight)
+//                        right = (delta * item.spanSize * 2) + (offsetLeft + offsetRight)
+//                    } else {
+////                        if (it.text=="6"){
+////                            left = -(offsetLeft + offsetRight)
+////                            right = (delta * item.spanSize * 2)
+////
+////                        }else {
+//                            right = delta * item.spanSize * 2
+////                        }
+//                    }
+//                }
+//
+//
+//            }
 
 
 //            // One item on the row
