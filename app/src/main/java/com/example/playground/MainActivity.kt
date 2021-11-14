@@ -17,6 +17,11 @@ class MainActivity : AppCompatActivity() {
         gridColumn = 4
         return ArrayList<ListItem>().apply {
 
+            add(ListItem("3", 1))
+            add(ListItem("4", 1))
+            add(ListItem("5", 1))
+            add(ListItem("6", 1))
+
             add(ListItem("20", 1))
             add(ListItem("21", 1))
             add(ListItem("22", 1))

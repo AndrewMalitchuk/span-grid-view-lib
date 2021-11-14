@@ -121,13 +121,14 @@ class GridItemDecorator(
 
                 //region сдвиг відно правго краю
                 var movement = (delta) * it.order
+
                 if (!it.right || (it.spanSize == col) || (it.order == 0)) {
                     Log.i(
                         "foo",
                         "${item.text} s = ${it.spanSize} | o = ${it.order} | m = ${movement.dp}"
                     )
-                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement + offsetLeft+spacingHorizontal
-                    right = delta * item.spanSize + movement - offsetLeft-spacingHorizontal
+                    left = (delta * item.spanSize) - (delta * item.spanSize) - movement + offsetLeft
+                    right = delta * item.spanSize + movement - offsetLeft+spacingHorizontal
                 } else {
                     if ((it.right && it.locked) && (it.spanSize < col / 2)) {
 
@@ -136,7 +137,7 @@ class GridItemDecorator(
 
                         left =
                             (delta * item.spanSize) - (delta * item.spanSize) - movement + offsetLeft
-                        right = delta * item.spanSize + movement - offsetLeft
+                        right = delta * item.spanSize + movement - offsetLeft+spacingHorizontal
 
                     } else {
 
@@ -146,19 +147,35 @@ class GridItemDecorator(
                         )
                         // 1 dp == 2 px
                         right =
-                            (delta * item.spanSize) - (delta * item.spanSize) + offsetRight
+                            (delta * item.spanSize) - (delta * item.spanSize) + offsetRight+ spacingHorizontal
                         left = delta * item.spanSize - offsetRight
                     }
                 }
                 //endregion
 
                 //region
+                if (it.vertical) {
+                    outRect.top = spacingVertical
+                    outRect.bottom = spacingVertical
+                }
                 if (it.top) {
                     outRect.top = offsetTop
                 }
                 if (it.bottom) {
                     outRect.bottom = offsetBottom
                 }
+//                if (it.horizontal) {
+//                    if (it.right) {
+//                        outRect.left = spacingHorizontal
+//                    } else {
+//                        if (it.left) {
+//                            outRect.right = spacingHorizontal
+//                        } else {
+//                            outRect.left = spacingHorizontal
+//                            outRect.right = spacingHorizontal
+//                        }
+//                    }
+//                }
                 //endregion
 
 
