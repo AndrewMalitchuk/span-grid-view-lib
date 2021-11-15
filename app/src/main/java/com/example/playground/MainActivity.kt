@@ -13,7 +13,44 @@ class MainActivity : AppCompatActivity() {
 
     var gridColumn = 0
 
-    fun genDummyData(): ArrayList<ListItem> {
+    // col 2; row 6
+    fun genDummyDataCol2(): ArrayList<ListItem> {
+        gridColumn = 2
+        return ArrayList<ListItem>().apply {
+            add(ListItem("0", 1))
+            add(ListItem("1", 1))
+            add(ListItem("2", 2))
+            add(ListItem("3", 2))
+            add(ListItem("4", 1))
+            add(ListItem("5", 2))
+            add(ListItem("6", 1))
+            add(ListItem("7", 2))
+            add(ListItem("8", 1))
+            add(ListItem("9", 1))
+        }
+    }
+
+    // col 3; row 6
+    fun genDummyDataCol3(): ArrayList<ListItem> {
+        gridColumn = 3
+        return ArrayList<ListItem>().apply {
+            add(ListItem("0", 3))
+            add(ListItem("1", 1))
+            add(ListItem("2", 1))
+            add(ListItem("3", 1))
+            add(ListItem("4", 2))
+            add(ListItem("5", 1))
+            add(ListItem("6", 1))
+            add(ListItem("7", 2))
+            add(ListItem("8", 1))
+            add(ListItem("9", 2))
+            add(ListItem("10", 3))
+            add(ListItem("11", 1))
+        }
+    }
+
+    // col 4
+    fun genDummyDataCol4(): ArrayList<ListItem> {
         gridColumn = 4
         return ArrayList<ListItem>().apply {
 
@@ -97,13 +134,39 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        val result = genDummyData()
+        val result = genDummyDataCol4()
         foo(result, gridColumn)
         with(binding) {
             val recyclerViewAdapter =
                 RecyclerViewAdapter(
                     result
                 )
+
+            val gridItemDecorator1 = GridItemDecorator(
+                offsetTop = 100,
+                offsetRight = 200,
+                offsetBottom = 250,
+                offsetLeft = 100,
+                spacingHorizontal = 20,
+                spacingVertical = 10
+            )
+            val gridItemDecorator2 = GridItemDecorator(
+                offsetTop = 50,
+                offsetRight = 50,
+                offsetBottom = 50,
+                offsetLeft = 500,
+                spacingHorizontal = 100,
+                spacingVertical = 100
+            )
+            val gridItemDecorator3 = GridItemDecorator(
+                offsetTop = 50,
+                offsetRight = 50,
+                offsetBottom = 50,
+                offsetLeft = 50,
+                spacingHorizontal = 50,
+                spacingVertical = 50
+            )
+
             rvList.apply {
                 layoutManager = GridLayoutManager(this@MainActivity, gridColumn).apply {
                     spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -114,14 +177,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 adapter = recyclerViewAdapter
                 addItemDecoration(
-                    GridItemDecorator(
-                        offsetTop = 100,
-                        offsetRight = 20,
-                        offsetBottom = 250,
-                        offsetLeft = 100,
-                        spacingHorizontal = 20,
-                        spacingVertical = 10
-                    )
+                    gridItemDecorator3
                 )
             }
 
@@ -137,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         var i = 0
         var spanSizeSum = 0
         var previousSum = 0
-        var previoudItem:UIModel?=null
+        var previoudItem: UIModel? = null
         while (i < list.size) {
             val currentItem = list[i]
 
@@ -149,15 +205,15 @@ class MainActivity : AppCompatActivity() {
                 if ((previousSum + currentItem.spanSize) > column) {
                     j++
                     pair = Pair(j, currentItem)
-                    previoudItem?.prevSum=spanSizeSum
-                    previoudItem?.locked=true
+                    previoudItem?.prevSum = spanSizeSum
+                    previoudItem?.locked = true
                     spanSizeSum = 0
                 } else {
                     if ((spanSizeSum + currentItem.spanSize) > column) {
                         j++
                         pair = Pair(j, currentItem)
-                        previoudItem?.prevSum=spanSizeSum
-                        previoudItem?.locked=true
+                        previoudItem?.prevSum = spanSizeSum
+                        previoudItem?.locked = true
                         spanSizeSum = 0
 
                     }
@@ -167,7 +223,7 @@ class MainActivity : AppCompatActivity() {
                 result.add(pair)
                 spanSizeSum += currentItem.spanSize
                 previousSum = currentItem.spanSize
-                previoudItem=currentItem
+                previoudItem = currentItem
             }
             if (spanSizeSum == column) {
                 spanSizeSum = 0
@@ -183,7 +239,7 @@ class MainActivity : AppCompatActivity() {
                     left = true
                     right = true
 
-                    order=0
+                    order = 0
                 }
             } else {
                 list.first().second.left = true
@@ -193,7 +249,7 @@ class MainActivity : AppCompatActivity() {
                 list.forEachIndexed { index, pair ->
 //                    with(it.second) {
                     with(pair.second) {
-                        order=index
+                        order = index
                         if (!right) {
                             horizontal = true
                         }

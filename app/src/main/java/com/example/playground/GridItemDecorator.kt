@@ -34,7 +34,7 @@ class GridItemDecorator(
         val realSize = width - (offsetLeft + offsetRight)
 
         val oneSpanSize = width / col
-        val realOneSpanSize = realSize / 2 / 2
+        val realOneSpanSize = realSize / col
 
         val oneColumnSize = oneSpanSize
         val realOneColumnSize = realOneSpanSize
@@ -59,10 +59,10 @@ class GridItemDecorator(
 
 
             // масштаб рабочий
-//            outRect.apply {
-//                left=delta*item.spanSize
-//                right=delta*item.spanSize
-//            }
+            outRect.apply {
+                left=delta*item.spanSize
+                right=delta*item.spanSize
+            }
 
             // screen width 411
             // 4 span width 365
@@ -164,18 +164,6 @@ class GridItemDecorator(
                 if (it.bottom) {
                     outRect.bottom = offsetBottom
                 }
-//                if (it.horizontal) {
-//                    if (it.right) {
-//                        outRect.left = spacingHorizontal
-//                    } else {
-//                        if (it.left) {
-//                            outRect.right = spacingHorizontal
-//                        } else {
-//                            outRect.left = spacingHorizontal
-//                            outRect.right = spacingHorizontal
-//                        }
-//                    }
-//                }
                 //endregion
 
 
